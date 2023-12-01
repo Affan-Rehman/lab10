@@ -3,24 +3,24 @@
  */
 package expressivo;
 
+import java.util.Objects;
+
 /**
  * An immutable data type representing a polynomial expression of:
  *   + and *
  *   nonnegative integers and floating-point numbers
  *   variables (case-sensitive nonempty strings of letters)
- * 
+ *
  * <p>PS3 instructions: this is a required ADT interface.
  * You MUST NOT change its name or package or the names or type signatures of existing methods.
- * You may, however, add additional methods, or strengthen the specs of existing methods.
+ * You may, however, add additional methods or strengthen the specs of existing methods.
  * Declare concrete variants of Expression in their own Java source files.
  */
 public interface Expression {
-    
-    // Datatype definition
-    //   TODO
-    
+
     /**
      * Parse an expression.
+     *
      * @param input expression to parse, as defined in the PS3 handout.
      * @return expression AST for the input
      * @throws IllegalArgumentException if the expression is invalid
@@ -28,12 +28,12 @@ public interface Expression {
     public static Expression parse(String input) {
         throw new RuntimeException("unimplemented");
     }
-    
+
     /**
      * @return a parsable representation of this expression, such that
      * for all e:Expression, e.equals(Expression.parse(e.toString())).
      */
-    @Override 
+    @Override
     public String toString();
 
     /**
@@ -43,15 +43,70 @@ public interface Expression {
      */
     @Override
     public boolean equals(Object thatObject);
-    
+
     /**
      * @return hash code value consistent with the equals() definition of structural
      * equality, such that for all e1,e2:Expression,
-     *     e1.equals(e2) implies e1.hashCode() == e2.hashCode()
+     * e1.equals(e2) implies e1.hashCode() == e2.hashCode()
      */
     @Override
     public int hashCode();
-    
+
     // TODO more instance methods
-    
+
+    // Concrete variant for NumericExpression
+    class NumericExpression implements Expression {
+        private final double value;
+
+        public NumericExpression(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return Double.toString(value);
+        }
+
+        @Override
+        public boolean equals(Object thatObject) {
+            if (this == thatObject) return true;
+            if (thatObject == null || getClass() != thatObject.getClass()) return false;
+            NumericExpression that = (NumericExpression) thatObject;
+            return Double.compare(that.value, value) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            long temp = Double.doubleToLongBits(value);
+            return (int) (temp ^ (temp >>> 32));
+        }
+    }
+
+    // Concrete variant for VariableExpression
+    class VariableExpression implements Expression {
+        private final String variable;
+
+        public VariableExpression(String variable) {
+            this.variable = Objects.requireNonNull(variable);
+        }
+
+        @Override
+        public String toString() {
+            return variable;
+        }
+
+        @Override
+        public boolean equals(Object thatObject) {
+            if (this == thatObject) return true;
+            if (thatObject == null || getClass() != thatObject.getClass()) return false;
+            VariableExpression that = (VariableExpression) thatObject;
+            return variable.equals(that.variable);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(variable);
+        }
+    }
 }
+
