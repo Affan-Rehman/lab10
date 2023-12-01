@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import expressivo.Expression.VariableExpression;
+import expressivo.Expression.NumericExpression;
 /**
  * Tests for the Expression abstract data type.
  */
@@ -22,5 +24,43 @@ public class ExpressionTest {
     
     
     // TODO tests for Expression
-    
+    @Test
+    void testToString() {
+        Expression expression = new AdditionExpression(
+                new NumericExpression(1),
+                new VariableExpression("x")
+        );
+
+        assertEquals("(1.0 + x)", expression.toString());
+    }
+
+    @Test
+    void testEquals() {
+        Expression expression1 = new AdditionExpression(
+                new NumericExpression(1),
+                new VariableExpression("x")
+        );
+
+        Expression expression2 = new AdditionExpression(
+                new NumericExpression(1),
+                new VariableExpression("x")
+        );
+
+        assertEquals(expression1, expression2);
+    }
+
+    @Test
+    void testHashCode() {
+        Expression expression1 = new AdditionExpression(
+                new NumericExpression(1),
+                new VariableExpression("x")
+        );
+
+        Expression expression2 = new AdditionExpression(
+                new NumericExpression(1),
+                new VariableExpression("x")
+        );
+
+        assertEquals(expression1.hashCode(), expression2.hashCode());
+    }
 }
