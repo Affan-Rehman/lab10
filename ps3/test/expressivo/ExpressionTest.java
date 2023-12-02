@@ -5,6 +5,8 @@ package expressivo;
 
 import static org.junit.Assert.*;
 
+import java.beans.Expression;
+
 import org.junit.Test;
 
 import expressivo.Expression.VariableExpression;
@@ -62,5 +64,15 @@ public class ExpressionTest {
         );
 
         assertEquals(expression1.hashCode(), expression2.hashCode());
+
+    }
+       @Test
+    void testSubtraction() {
+        Expression expression = new SubtractionExpression(
+                new NumericExpression(5),
+                new NumericExpression(3)
+        );
+
+        assertEquals("(5.0 - 3.0)", expression.toString());
     }
 }
